@@ -1,5 +1,7 @@
 package com.tinkoff.edu;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Unit test for simple App.
  */
@@ -12,5 +14,8 @@ public class AppTest
     public void shouldAnswerWithTrue()
     {
         assertTrue( true );
+    }
+
+    private void assertTrue(boolean b) {
     }
 }
