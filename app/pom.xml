@@ -71,4 +71,58 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-maven-proxy/</url>
+    </repository>
+    <repository>
+      <id>confluent</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-confluent-proxy/</url>
+    </repository>
+    <repository>
+      <id>bap-snapshot</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-qa-bap-snapshot/</url>
+    </repository>
+    <repository>
+      <id>common-api-releases</id>
+      <url>https://nexus.tcsbank.ru/repository/common-api-releases/</url>
+    </repository>
+    <repository>
+      <id>mvn_processing_thirdparty</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn_processing_thirdparty/</url>
+    </repository>
+    <repository>
+      <id>proxy-maven-processing-release</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn_processing_release</url>
+    </repository>
+    <repository>
+      <id>mvn-qa-bap-release</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-qa-bap-release/</url>
+    </repository>
+    <repository>
+      <id>mvn-qa</id>
+      <name>qa repository</name>
+      <url>https://nexus.tcsbank.ru/repository/mvn-qa</url>
+    </repository>
+    <repository>
+      <id>proxy-maven-jcenter</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-proxy-jcenter-release</url>
+    </repository>
+    <repository>
+      <id>thirdparty</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-thirdparty</url>
+    </repository>
+    <repository>
+      <id>spring-proxy</id>
+      <url>https://registry.tcsbank.ru/repository/mvn-springio-plugins-release</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://nexus.tcsbank.ru/repository/mvn-maven-proxy/</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
