@@ -4,7 +4,7 @@ public class LoanCalcService {
     /**
      * Loan calculation
      */
-    public static void createRequest() {
-        LoanCalcRepository.save();
+    public static int createRequest() {
+        return LoanCalcRepository.save();
     }
 }

@@ -7,8 +7,10 @@ public class LoanCalcController {
     /**
      * Validates and logs request
      */
-    public static void createRequest() {
-        //.....
-        LoanCalcService.createRequest();
+    public static int createRequest() {
+        //param validation
+        //log request
+        LoanCalcLogger.log();
+        return LoanCalcService.createRequest();
     }
 }

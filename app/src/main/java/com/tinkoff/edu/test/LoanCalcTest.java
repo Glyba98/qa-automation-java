@@ -8,6 +8,6 @@ import com.tinkoff.edu.app.LoanCalcController;
 public class LoanCalcTest
 {
     public static void main(String... args) {
-        LoanCalcController.createRequest();
+        int requestId = LoanCalcController.createRequest();
     }
 }
