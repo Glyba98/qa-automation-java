@@ -3,7 +3,7 @@ package com.tinkoff.edu;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit test for simple App.
+ * Loan Calc Tests.
  */
 public class AppTest
 {
