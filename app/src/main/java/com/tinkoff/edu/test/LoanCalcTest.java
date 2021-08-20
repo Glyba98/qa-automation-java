@@ -3,11 +3,13 @@ package com.tinkoff.edu.test;
 import com.tinkoff.edu.app.LoanCalcController;
 import com.tinkoff.edu.app.LoanRequest;
 
+import static com.tinkoff.edu.app.LoanCalcController.createRequest;
+
 /**
  * Loan Calc Tests
  */
 public class LoanCalcTest {
-    public void main(String... args) {
+    public static void main(String... args) {
         LoanRequest loanRequest;
         int requestId = createRequest(loanRequest);
 
