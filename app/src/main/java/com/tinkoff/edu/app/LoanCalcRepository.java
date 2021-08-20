@@ -7,8 +7,9 @@ public class LoanCalcRepository {
      *  TODO persists request
      * @return Request Id
      */
-    public static int save(LoanRequest request) {
+    public static LoanResponse save(LoanRequest request) {
         //....
-        return ++requestId;
+        LoanResponse response = new LoanResponse(++requestId);
+        return  response;
     }
 }
