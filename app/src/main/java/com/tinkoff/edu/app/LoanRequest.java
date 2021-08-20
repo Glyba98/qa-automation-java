@@ -4,8 +4,13 @@ package com.tinkoff.edu.app;
  * Class, Type -> objects, instances
  */
 public class LoanRequest {
-    private int months;
-    private int amount;
+    private final int months;
+    private final int amount;
+
+    public LoanRequest(int months, int amount) {
+        this.months = months;
+        this.amount = amount;
+    }
 
     public int getAmount() {
         return amount;
@@ -13,13 +18,5 @@ public class LoanRequest {
 
     public int getMonths() {
         return months;
-    }
-
-    public void setMonths(int months) {
-        this.months = months;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 }

@@ -10,7 +10,7 @@ import static com.tinkoff.edu.app.LoanCalcController.createRequest;
  */
 public class LoanCalcTest {
     public static void main(String... args) {
-        LoanRequest loanRequest;
+        LoanRequest loanRequest = new LoanRequest(10, 1000);
         int requestId = createRequest(loanRequest);
 
         System.out.println(requestId + " must be 1");
