@@ -7,6 +7,6 @@ public class LoanCalcService {
      * Loan calculation
      */
     public static int createRequest(LoanRequest request) {
-        return save();
+        return save(request);
     }
 }
