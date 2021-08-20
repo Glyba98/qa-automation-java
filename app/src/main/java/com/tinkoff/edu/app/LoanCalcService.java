@@ -1,10 +1,12 @@
 package com.tinkoff.edu.app;
 
+
 public class LoanCalcService {
+    private LoanCalcRepository loanCalcRepository = new LoanCalcRepository();
     /**
      * Loan calculation
      */
-    public static int createRequest() {
-        return LoanCalcRepository.save();
+    public LoanResponse createRequest(LoanRequest request) {
+        return loanCalcRepository.save(request);
     }
 }
