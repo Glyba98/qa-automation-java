@@ -9,7 +9,7 @@ public class LoanCalcRepository {
      */
     public LoanResponse save(LoanRequest request) {
         //....
-        LoanResponse response = new LoanResponse(++requestId);
+        LoanResponse response = new LoanResponse(++requestId, request, LoanDecision.APPROVED);
         return  response;
     }
 }
