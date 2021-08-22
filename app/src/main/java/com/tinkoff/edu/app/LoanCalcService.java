@@ -2,7 +2,7 @@ package com.tinkoff.edu.app;
 
 
 public class LoanCalcService {
-    private LoanCalcRepository loanCalcRepository = new LoanCalcRepository();
+    private LoanCalcRepository loanCalcRepository = new StaticVariableLoanCalcRepository();
     /**
      * Loan calculation
      */
