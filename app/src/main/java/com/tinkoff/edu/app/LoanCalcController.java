@@ -3,7 +3,12 @@ package com.tinkoff.edu.app;
 import static com.tinkoff.edu.app.LoanCalcLogger.log;
 
 public class LoanCalcController {
-    private LoanCalcService loanCalcService = new LoanCalcService();
+    BasicLoanCalcService loanCalcService;
+
+    public LoanCalcController(LoanCalcRepository repo) {
+        BasicLoanCalcService loanCalcService = new BasicLoanCalcService(repo);
+    }
+
     /**
      * Validates and logs request
      */
