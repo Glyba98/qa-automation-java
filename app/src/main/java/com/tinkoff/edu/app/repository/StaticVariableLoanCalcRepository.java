@@ -1,6 +1,10 @@
-package com.tinkoff.edu.app;
+package com.tinkoff.edu.app.repository;
 
-public class StaticVariableLoanCalcRepository implements LoanCalcRepository{
+import com.tinkoff.edu.app.LoanRequest;
+import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.dictionary.LoanDecision;
+
+public class StaticVariableLoanCalcRepository implements LoanCalcRepository {
     private static int requestId;
 
     /**

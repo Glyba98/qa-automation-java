@@ -1,4 +1,9 @@
-package com.tinkoff.edu.app;
+package com.tinkoff.edu.app.service;
+
+import com.tinkoff.edu.app.LoanRequest;
+import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.dictionary.LoanType;
+import com.tinkoff.edu.app.repository.LoanCalcRepository;
 
 public class IpNotFriendlyService extends BasicLoanCalcService {
     public IpNotFriendlyService(LoanCalcRepository loanCalcRepository) {
