@@ -19,7 +19,7 @@ public class BasicLoanCalcService implements LoanCalcService {
     /**
      * Loan calculation
      */
-    public LoanResponse createRequest(LoanRequest request, int requestId) {
-        return loanCalcRepository.save(request, requestId);
+    public LoanResponse createRequest(LoanRequest request) {
+        return loanCalcRepository.save(request);
     }
 }

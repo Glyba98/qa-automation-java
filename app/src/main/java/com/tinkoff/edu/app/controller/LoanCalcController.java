@@ -16,9 +16,9 @@ public class LoanCalcController {
     /**
      * Validates and logs request
      */
-    public LoanResponse createRequest(LoanRequest request, int requestId) {
+    public LoanResponse createRequest(LoanRequest request) {
         log();
 
-        return  loanCalcService.createRequest(request, requestId);
+        return  loanCalcService.createRequest(request);
     }
 }
