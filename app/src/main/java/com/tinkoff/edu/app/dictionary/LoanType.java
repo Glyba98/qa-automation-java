@@ -1,4 +1,4 @@
-package com.tinkoff.edu.app;
+package com.tinkoff.edu.app.dictionary;
 
 public enum LoanType {
     PERSON,

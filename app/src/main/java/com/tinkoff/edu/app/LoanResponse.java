@@ -1,5 +1,7 @@
 package com.tinkoff.edu.app;
 
+import com.tinkoff.edu.app.dictionary.LoanDecision;
+
 public class LoanResponse {
     private final int requestId;
     private final LoanRequest request;

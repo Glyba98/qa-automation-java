@@ -1,5 +1,7 @@
 package com.tinkoff.edu.app;
 
+import com.tinkoff.edu.app.dictionary.LoanType;
+
 /**
  * Class, Type -> objects, instances
  */
@@ -33,3 +35,4 @@ public class LoanRequest {
                 + this.getMonths() + "}";
     }
 }
+

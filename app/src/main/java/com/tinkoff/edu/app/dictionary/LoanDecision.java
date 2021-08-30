@@ -1,7 +1,7 @@
-package com.tinkoff.edu.app;
+package com.tinkoff.edu.app.dictionary;
 
 /**
- * Type of bank answer 
+ * Type of bank answer
  */
 public enum LoanDecision {
     APPROVED, NOT_APPROVED
