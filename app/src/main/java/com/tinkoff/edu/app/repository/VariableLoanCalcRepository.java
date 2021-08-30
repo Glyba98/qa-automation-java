@@ -4,14 +4,21 @@ import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.LoanDecision;
 
-public class StaticVariableLoanCalcRepository implements LoanCalcRepository {
-    private static int requestId;
+public class VariableLoanCalcRepository implements LoanCalcRepository {
+    private int requestId;
 
+    public VariableLoanCalcRepository(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
     /**
      *  TODO persists request
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request, int requestId) {
+    public LoanResponse save(LoanRequest request) {
         //....
         LoanResponse response = new LoanResponse(++requestId, request, LoanDecision.APPROVED);
         return  response;

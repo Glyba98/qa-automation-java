@@ -4,5 +4,5 @@ import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 
 public interface LoanCalcService {
-    LoanResponse createRequest(LoanRequest request, int requestId);
+    LoanResponse createRequest(LoanRequest request);
 }

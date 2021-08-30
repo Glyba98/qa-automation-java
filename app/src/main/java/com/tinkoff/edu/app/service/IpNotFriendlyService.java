@@ -11,11 +11,11 @@ public class IpNotFriendlyService extends BasicLoanCalcService {
     }
 
     @Override
-    public LoanResponse createRequest(LoanRequest request, int requestId) {
+    public LoanResponse createRequest(LoanRequest request) {
         if (request.getType().equals(LoanType.IP)) {
             return new LoanResponse(-1, null, null);
         }
-        return super.createRequest(request, requestId);
+        return super.createRequest(request);
 
     }
 }
