@@ -11,7 +11,7 @@ public class StaticVariableLoanCalcRepository implements LoanCalcRepository {
      *  TODO persists request
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request) {
+    public LoanResponse save(LoanRequest request, int requestId) {
         //....
         LoanResponse response = new LoanResponse(++requestId, request, LoanDecision.APPROVED);
         return  response;
