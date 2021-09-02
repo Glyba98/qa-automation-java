@@ -10,6 +10,7 @@ import com.tinkoff.edu.app.service.IpNotFriendlyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +29,7 @@ public class AppTest {
 
     @BeforeEach
     public void init() {
-        request = new LoanRequest(10, 1000, LoanType.PERSON);
+        request = new LoanRequest(10, BigDecimal.valueOf(1000), LoanType.PERSON);
     }
 
     @Test

@@ -2,21 +2,23 @@ package com.tinkoff.edu.app;
 
 import com.tinkoff.edu.app.dictionary.LoanType;
 
+import java.math.BigDecimal;
+
 /**
  * Class, Type -> objects, instances
  */
 public class LoanRequest {
     private final int months;
-    private final int amount;
+    private final BigDecimal amount;
     private final LoanType type;
 
-    public LoanRequest(int months, int amount, LoanType type) {
+    public LoanRequest(int months, BigDecimal amount, LoanType type) {
         this.months = months;
         this.amount = amount;
         this.type = type;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 

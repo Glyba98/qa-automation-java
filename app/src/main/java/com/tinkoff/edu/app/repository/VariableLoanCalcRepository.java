@@ -16,13 +16,14 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
     }
 
     /**
-     * TODO persists request
+     * Сохранение ID заявки
      *
+     * @param request параметры заявки
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request) {
+    public LoanResponse save(LoanRequest request, ResponseType responseType) {
         //....
-        LoanResponse response = new LoanResponse(++requestId, request, ResponseType.APPROVED);
+        LoanResponse response = new LoanResponse(++requestId, request, responseType);
         return response;
     }
 }
