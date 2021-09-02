@@ -1,8 +1,10 @@
 package com.tinkoff.edu;
 
 import com.tinkoff.edu.app.LoanRequest;
+import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.controller.LoanCalcController;
 import com.tinkoff.edu.app.dictionary.LoanType;
+import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.IpNotFriendlyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +52,19 @@ public class AppTest {
         int actualRequestId = sut.createRequest(request).getRequestId();
 
         assertEquals(expectedRequestId, actualRequestId, "Значение requestId не совало с о ожидаемым");
+    }
+
+    @Test
+    public void shouldGetApproveWhenValidRequest() {
+        int requestId = 1;
+        int approvingMonths = 10;
+        request = new LoanRequest(approvingMonths, 1000, LoanType.PERSON);
+        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(requestId)));
+
+        LoanResponse actualResponse = sut.createRequest(request);
+        LoanResponse expectedResponse = new LoanResponse(2, request,ResponseType.APPROVED);
+
+        assertEquals(expectedResponse, actualResponse);
     }
 
 }

@@ -2,9 +2,8 @@ package com.tinkoff.edu.app.controller;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.service.LoanCalcService;
-
-import static com.tinkoff.edu.app.LoanCalcLogger.log;
 
 public class LoanCalcController {
     private LoanCalcService loanCalcService;
@@ -17,8 +16,12 @@ public class LoanCalcController {
      * Validates and logs request
      */
     public LoanResponse createRequest(LoanRequest request) {
-        log();
+        if (request == null) throw new IllegalArgumentException();
 
-        return loanCalcService.createRequest(request);
+        if (request.getMonths() > 12) {
+            return new LoanResponse(-1, request, ResponseType.NOT_APPROVED);
+        } else {
+            return new LoanResponse(loanCalcService.createRequest(request).getRequestId(), request, ResponseType.APPROVED);
+        }
     }
 }
