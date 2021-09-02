@@ -1,16 +1,16 @@
 package com.tinkoff.edu.app;
 
-import com.tinkoff.edu.app.dictionary.LoanDecision;
+import com.tinkoff.edu.app.dictionary.ResponseType;
 
 public class LoanResponse {
     private final int requestId;
     private final LoanRequest request;
-    private final LoanDecision decision;
+    private final ResponseType responseType;
 
-    public LoanResponse(int requestId, LoanRequest request, LoanDecision decision) {
+    public LoanResponse(int requestId, LoanRequest request, ResponseType responseType) {
         this.requestId = requestId;
         this.request = request;
-        this.decision = decision;
+        this.responseType = responseType;
     }
 
     public int getRequestId() {
@@ -21,8 +21,8 @@ public class LoanResponse {
         return request;
     }
 
-    public LoanDecision getDecision() {
-        return decision;
+    public ResponseType getResponseType() {
+        return responseType;
     }
 
     public String toString() {

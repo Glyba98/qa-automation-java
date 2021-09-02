@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Loan Calc Tests.
  */
 public class AppTest {
-    private  LoanRequest request;
+    private LoanRequest request;
     private LoanCalcController sut;
 
     public AppTest() {
@@ -31,6 +31,7 @@ public class AppTest {
 
     @Test
     public void shouldGet1WhenFirstRequest() {
+
         VariableLoanCalcRepository repo = new VariableLoanCalcRepository(0);
         sut = new LoanCalcController(new IpNotFriendlyService(repo));
         assumeTrue(repo.getRequestId() == 0);

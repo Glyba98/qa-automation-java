@@ -19,6 +19,6 @@ public class LoanCalcController {
     public LoanResponse createRequest(LoanRequest request) {
         log();
 
-        return  loanCalcService.createRequest(request);
+        return loanCalcService.createRequest(request);
     }
 }

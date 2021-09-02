@@ -2,7 +2,7 @@ package com.tinkoff.edu.app.repository;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
-import com.tinkoff.edu.app.dictionary.LoanDecision;
+import com.tinkoff.edu.app.dictionary.ResponseType;
 
 public class VariableLoanCalcRepository implements LoanCalcRepository {
     private int requestId;
@@ -14,13 +14,15 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
     public int getRequestId() {
         return requestId;
     }
+
     /**
-     *  TODO persists request
+     * TODO persists request
+     *
      * @return Request Id
      */
     public LoanResponse save(LoanRequest request) {
         //....
-        LoanResponse response = new LoanResponse(++requestId, request, LoanDecision.APPROVED);
-        return  response;
+        LoanResponse response = new LoanResponse(++requestId, request, ResponseType.APPROVED);
+        return response;
     }
 }
