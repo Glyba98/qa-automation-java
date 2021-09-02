@@ -40,9 +40,12 @@ public class LoanResponse {
         return responseType;
     }
 
+    @Override
     public String toString() {
         return "LoanResponse{" +
                 "requestId=" + requestId +
+                ", request=" + request +
+                ", responseType=" + responseType +
                 '}';
     }
 }

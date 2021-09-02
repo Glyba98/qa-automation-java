@@ -51,7 +51,7 @@ public class BasicLoanCalcService implements LoanCalcService {
             case IP:
                 return getRespStatusForIp();
             default:
-                throw new NullPointerException("Неизвестный тип клиента");
+                throw new IllegalArgumentException("Неизвестный тип клиента");
         }
     }
 
@@ -66,7 +66,7 @@ public class BasicLoanCalcService implements LoanCalcService {
 
     private ResponseType getRespStatusForOoo(BigDecimal cornerAmount, BigDecimal amount, int months) {
 
-        if (amount.compareTo(cornerAmount) > 0 && months <= 12) {
+        if (amount.compareTo(cornerAmount) > 0 && months < 12) {
             return ResponseType.APPROVED;
         } else {
             return ResponseType.NOT_APPROVED;
