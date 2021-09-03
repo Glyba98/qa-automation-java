@@ -1,6 +1,6 @@
 package com.tinkoff.edu.app;
 
-import com.tinkoff.edu.app.dictionary.LoanType;
+import com.tinkoff.edu.app.dictionary.ClientType;
 
 import java.math.BigDecimal;
 
@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 public class LoanRequest {
     private final int months;
     private final BigDecimal amount;
-    private final LoanType type;
+    private final ClientType type;
 
-    public LoanRequest(int months, BigDecimal amount, LoanType type) {
+    public LoanRequest(int months, BigDecimal amount, ClientType type) {
         this.months = months;
         this.amount = amount;
         this.type = type;
@@ -26,7 +26,7 @@ public class LoanRequest {
         return months;
     }
 
-    public LoanType getType() {
+    public ClientType getType() {
         return type;
     }
 

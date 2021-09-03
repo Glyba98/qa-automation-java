@@ -1,6 +1,6 @@
 package com.tinkoff.edu.app.dictionary;
 
-public enum LoanType {
+public enum ClientType {
     PERSON,
     IP,
     OOO,

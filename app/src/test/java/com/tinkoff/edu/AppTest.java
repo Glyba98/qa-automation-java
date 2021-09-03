@@ -3,7 +3,7 @@ package com.tinkoff.edu;
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.controller.LoanCalcController;
-import com.tinkoff.edu.app.dictionary.LoanType;
+import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.BasicLoanCalcService;
@@ -32,7 +32,7 @@ public class AppTest {
     @Test
     public void shouldGet1WhenFirstRequest() {
 
-        request = new LoanRequest(1, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.PERSON);
         VariableLoanCalcRepository repo = new VariableLoanCalcRepository(0);
         sut = new LoanCalcController(new BasicLoanCalcService(repo));
         assumeTrue(repo.getRequestId() == 0);
@@ -44,7 +44,7 @@ public class AppTest {
     @Test
     public void shouldGetIncrementedIdWhenAnyCall() {
 
-        request = new LoanRequest(1, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.PERSON);
         final int requestId = new Random().nextInt(100);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(requestId)));
 
@@ -56,7 +56,7 @@ public class AppTest {
 
     @Test
     public void shouldGetApproveWhenValidRequest() {
-        request = new LoanRequest(10, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(10, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
 
         LoanResponse actualResponse = sut.createRequest(request);
@@ -69,7 +69,7 @@ public class AppTest {
     public void shouldGetApproveWhenBoundaryValuesRequestForPerson() {
         int requestId = 1;
         int approvingMonths = 12;
-        request = new LoanRequest(approvingMonths, BigDecimal.valueOf(10000), LoanType.PERSON);
+        request = new LoanRequest(approvingMonths, BigDecimal.valueOf(10000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(requestId)));
 
         LoanResponse actualResponse = sut.createRequest(request);
@@ -80,7 +80,7 @@ public class AppTest {
 
     @Test
     public void shouldGetRequestDataInResponse() {
-        request = new LoanRequest(11, BigDecimal.valueOf(10000), LoanType.PERSON);
+        request = new LoanRequest(11, BigDecimal.valueOf(10000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -89,7 +89,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApproveWhenMonthsLowerThenMaxForPerson() {
-        request = new LoanRequest(13, BigDecimal.valueOf(10000), LoanType.PERSON);
+        request = new LoanRequest(13, BigDecimal.valueOf(10000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -98,7 +98,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApproveWhenAmountLowerThenMaxForPerson() {
-        request = new LoanRequest(10, BigDecimal.valueOf(10001), LoanType.PERSON);
+        request = new LoanRequest(10, BigDecimal.valueOf(10001), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -118,7 +118,7 @@ public class AppTest {
     @Test
     public void shouldGetErrorWhenApplyNegativeAmountRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            request = new LoanRequest(1, BigDecimal.valueOf(-1000), LoanType.PERSON);
+            request = new LoanRequest(1, BigDecimal.valueOf(-1000), ClientType.PERSON);
             sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
             sut.createRequest(request);
         });
@@ -128,7 +128,7 @@ public class AppTest {
     @Test
     public void shouldGetErrorWhenApplyZeroAmountRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            request = new LoanRequest(1, BigDecimal.valueOf(0), LoanType.PERSON);
+            request = new LoanRequest(1, BigDecimal.valueOf(0), ClientType.PERSON);
             sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
             sut.createRequest(request);
         });
@@ -138,7 +138,7 @@ public class AppTest {
     @Test
     public void shouldGetErrorWhenMonthsNegativeRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            request = new LoanRequest(-1, BigDecimal.valueOf(1000), LoanType.PERSON);
+            request = new LoanRequest(-1, BigDecimal.valueOf(1000), ClientType.PERSON);
             sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
             sut.createRequest(request);
         });
@@ -148,7 +148,7 @@ public class AppTest {
     @Test
     public void shouldGetErrorWhenMonthsZeroRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            request = new LoanRequest(0, BigDecimal.valueOf(1000), LoanType.PERSON);
+            request = new LoanRequest(0, BigDecimal.valueOf(1000), ClientType.PERSON);
             sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
             sut.createRequest(request);
         });
@@ -156,9 +156,9 @@ public class AppTest {
     }
 
     @Test
-    public void shouldGetErrorWhenLoanTypeNotSupported() {
+    public void shouldGetErrorWhenClientTypeNotSupported() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            request = new LoanRequest(1, BigDecimal.valueOf(1000), LoanType.OAO);
+            request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.OAO);
             sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
             sut.createRequest(request);
         });
@@ -166,8 +166,8 @@ public class AppTest {
     }
 
     @Test
-    public void shouldNotApprovedWhenLoanTypeIsIP() {
-        request = new LoanRequest(1, BigDecimal.valueOf(1000), LoanType.IP);
+    public void shouldNotApprovedWhenClientTypeIsIP() {
+        request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.IP);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -176,7 +176,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApprovedWhenAmountLess10000ForOOO() {
-        request = new LoanRequest(1, BigDecimal.valueOf(9999), LoanType.OOO);
+        request = new LoanRequest(1, BigDecimal.valueOf(9999), ClientType.OOO);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -185,7 +185,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApprovedWhenAmountIs10000ForOOO() {
-        request = new LoanRequest(1, BigDecimal.valueOf(10000), LoanType.OOO);
+        request = new LoanRequest(1, BigDecimal.valueOf(10000), ClientType.OOO);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -194,7 +194,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApprovedWhenMonthsMore12ForOOO() {
-        request = new LoanRequest(13, BigDecimal.valueOf(10001), LoanType.OOO);
+        request = new LoanRequest(13, BigDecimal.valueOf(10001), ClientType.OOO);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -203,7 +203,7 @@ public class AppTest {
 
     @Test
     public void shouldNotApprovedWhenMonthsIs12ForOOO() {
-        request = new LoanRequest(12, BigDecimal.valueOf(10001), LoanType.OOO);
+        request = new LoanRequest(12, BigDecimal.valueOf(10001), ClientType.OOO);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -212,7 +212,7 @@ public class AppTest {
 
     @Test
     public void shouldApprovedWhenMonthsLess12AndAmountMore10000ForOOO() {
-        request = new LoanRequest(11, BigDecimal.valueOf(10001), LoanType.OOO);
+        request = new LoanRequest(11, BigDecimal.valueOf(10001), ClientType.OOO);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -221,7 +221,7 @@ public class AppTest {
 
     @Test
     public void shouldErrorWhenCallIpNotFriendlyServiceWithIPRequest() {
-        request = new LoanRequest(11, BigDecimal.valueOf(10001), LoanType.IP);
+        request = new LoanRequest(11, BigDecimal.valueOf(10001), ClientType.IP);
         sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -230,7 +230,7 @@ public class AppTest {
 
     @Test
     public void shouldNotErrorWhenCallIpNotFriendlyServiceWithoutIPRequest() {
-        request = new LoanRequest(11, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -239,7 +239,7 @@ public class AppTest {
 
     @Test
     public void shouldGetTrueWhenCompareSameResponses() {
-        request = new LoanRequest(11, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -248,7 +248,7 @@ public class AppTest {
 
     @Test
     public void shouldGetFalseWhenCompareResponseWithOtherObject() {
-        request = new LoanRequest(11, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
@@ -257,7 +257,7 @@ public class AppTest {
 
     @Test
     public void shouldGetFalseWhenCompareResponseWithNull() {
-        request = new LoanRequest(11, BigDecimal.valueOf(1000), LoanType.PERSON);
+        request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 

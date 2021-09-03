@@ -3,7 +3,7 @@ package com.tinkoff.edu.app.service;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
-import com.tinkoff.edu.app.dictionary.LoanType;
+import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
 
@@ -31,7 +31,7 @@ public class BasicLoanCalcService implements LoanCalcService {
         BigDecimal requestAmount = request.getAmount();
         int requestMonths = request.getMonths();
 
-        if (requestAmount.compareTo(new BigDecimal(0)) <= 0)
+        if (requestAmount.signum() <= 0)
             throw new IllegalArgumentException("Сумма кредита должна быть больше 0");
 
         if (requestMonths <= 0)
@@ -42,20 +42,20 @@ public class BasicLoanCalcService implements LoanCalcService {
         return loanCalcRepository.save(request, responseType);
     }
 
-    private ResponseType getResponseType(LoanType clientType, BigDecimal cornerAmount, BigDecimal amount, int months) {
+    private ResponseType getResponseType(ClientType clientType, BigDecimal cornerAmount, BigDecimal amount, int months) {
         switch (clientType) {
             case PERSON:
-                return getRespStatusForPerson(cornerAmount, amount, months);
+                return getResponseStatusForPerson(cornerAmount, amount, months);
             case OOO:
-                return getRespStatusForOoo(cornerAmount, amount, months);
+                return getResponseStatusForOoo(cornerAmount, amount, months);
             case IP:
-                return getRespStatusForIp();
+                return getResponseStatusForIp();
             default:
                 throw new IllegalArgumentException("Неизвестный тип клиента");
         }
     }
 
-    private ResponseType getRespStatusForPerson(BigDecimal cornerAmount, BigDecimal amount, int months) {
+    private ResponseType getResponseStatusForPerson(BigDecimal cornerAmount, BigDecimal amount, int months) {
 
         if (amount.compareTo(cornerAmount) <= 0 && months <= 12) {
             return ResponseType.APPROVED;
@@ -64,7 +64,7 @@ public class BasicLoanCalcService implements LoanCalcService {
         }
     }
 
-    private ResponseType getRespStatusForOoo(BigDecimal cornerAmount, BigDecimal amount, int months) {
+    private ResponseType getResponseStatusForOoo(BigDecimal cornerAmount, BigDecimal amount, int months) {
 
         if (amount.compareTo(cornerAmount) > 0 && months < 12) {
             return ResponseType.APPROVED;
@@ -74,7 +74,7 @@ public class BasicLoanCalcService implements LoanCalcService {
     }
 
 
-    private ResponseType getRespStatusForIp() {
+    private ResponseType getResponseStatusForIp() {
         return ResponseType.NOT_APPROVED;
     }
 }
