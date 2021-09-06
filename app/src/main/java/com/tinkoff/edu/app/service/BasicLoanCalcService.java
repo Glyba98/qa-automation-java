@@ -3,6 +3,7 @@ package com.tinkoff.edu.app.service;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
@@ -39,7 +40,11 @@ public class BasicLoanCalcService implements LoanCalcService {
 
         ResponseType responseType = getResponseType(request.getType(), maxAmount, requestAmount, requestMonths);
 
-        return loanCalcRepository.save(request, responseType);
+        try {
+            return loanCalcRepository.save(request, responseType);
+        } catch (StorageIsFullException e) {
+            return null;
+        }
     }
 
     private ResponseType getResponseType(ClientType clientType, BigDecimal cornerAmount, BigDecimal amount, int months) {

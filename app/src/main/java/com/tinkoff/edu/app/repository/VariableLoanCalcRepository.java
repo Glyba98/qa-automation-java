@@ -2,19 +2,17 @@ package com.tinkoff.edu.app.repository;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 
 import java.util.UUID;
 
 public class VariableLoanCalcRepository implements LoanCalcRepository {
-    private int requestId;
+    private LoanResponse[] loanResponses;
+    private int lastRecord  = 0;
 
-    public VariableLoanCalcRepository(int requestId) {
-        this.requestId = requestId;
-    }
-
-    public int getRequestId() {
-        return requestId;
+    public VariableLoanCalcRepository() {
+        loanResponses = new LoanResponse[100_000];
     }
 
     /**
@@ -23,10 +21,16 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param request параметры заявки
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request, ResponseType responseType) {
+    public LoanResponse save(LoanRequest request, ResponseType responseType) throws StorageIsFullException {
         //....
-        UUID uuid = UUID.randomUUID();
-        LoanResponse response = new LoanResponse(uuid, request, responseType);
-        return response;
+        if ( lastRecord < 100000) {
+            UUID uuid = UUID.randomUUID();
+            LoanResponse response = new LoanResponse(uuid, request, responseType);
+            loanResponses[++lastRecord] = response;
+            return response;
+        }
+        else {
+            throw new StorageIsFullException("Хранилище заполнено!!");
+        }
     }
 }
