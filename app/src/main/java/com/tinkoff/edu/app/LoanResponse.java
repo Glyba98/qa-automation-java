@@ -8,7 +8,7 @@ import java.util.UUID;
 public class LoanResponse {
     private final UUID uuid;
     private final LoanRequest request;
-    private final ResponseType responseType;
+    private ResponseType responseType;
 
     public LoanResponse(UUID uuid, LoanRequest request, ResponseType responseType) {
         this.uuid = uuid;
@@ -48,5 +48,9 @@ public class LoanResponse {
                 ", request=" + request +
                 ", responseType=" + responseType +
                 '}';
+    }
+
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
     }
 }

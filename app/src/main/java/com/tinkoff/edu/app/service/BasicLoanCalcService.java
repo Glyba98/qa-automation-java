@@ -82,4 +82,6 @@ public class BasicLoanCalcService implements LoanCalcService {
     private ResponseType getResponseStatusForIp() {
         return ResponseType.NOT_APPROVED;
     }
+
+
 }
