@@ -3,14 +3,15 @@ package com.tinkoff.edu.app;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class LoanResponse {
-    private final int requestId;
+    private final UUID uuid;
     private final LoanRequest request;
     private final ResponseType responseType;
 
-    public LoanResponse(int requestId, LoanRequest request, ResponseType responseType) {
-        this.requestId = requestId;
+    public LoanResponse(UUID uuid, LoanRequest request, ResponseType responseType) {
+        this.uuid = uuid;
         this.request = request;
         this.responseType = responseType;
     }
@@ -20,16 +21,16 @@ public class LoanResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanResponse response = (LoanResponse) o;
-        return requestId == response.requestId && Objects.equals(request, response.request) && responseType == response.responseType;
+        return uuid == response.uuid && Objects.equals(request, response.request) && responseType == response.responseType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(requestId, request, responseType);
+        return Objects.hash(uuid, request, responseType);
     }
 
-    public int getRequestId() {
-        return requestId;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public LoanRequest getRequest() {
@@ -43,7 +44,7 @@ public class LoanResponse {
     @Override
     public String toString() {
         return "LoanResponse{" +
-                "requestId=" + requestId +
+                "requestId=" + uuid +
                 ", request=" + request +
                 ", responseType=" + responseType +
                 '}';

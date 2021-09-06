@@ -4,6 +4,8 @@ import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 
+import java.util.UUID;
+
 public class VariableLoanCalcRepository implements LoanCalcRepository {
     private int requestId;
 
@@ -23,7 +25,8 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      */
     public LoanResponse save(LoanRequest request, ResponseType responseType) {
         //....
-        LoanResponse response = new LoanResponse(++requestId, request, responseType);
+        UUID uuid = UUID.randomUUID();
+        LoanResponse response = new LoanResponse(uuid, request, responseType);
         return response;
     }
 }

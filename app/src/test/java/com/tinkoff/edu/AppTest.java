@@ -7,16 +7,13 @@ import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.BasicLoanCalcService;
-import com.tinkoff.edu.app.service.IpNotFriendlyService;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Loan Calc Tests.
@@ -30,37 +27,12 @@ public class AppTest {
     }
 
     @Test
-    public void shouldGet1WhenFirstRequest() {
-
-        request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.PERSON);
-        VariableLoanCalcRepository repo = new VariableLoanCalcRepository(0);
-        sut = new LoanCalcController(new BasicLoanCalcService(repo));
-        assumeTrue(repo.getRequestId() == 0);
-
-        int requestId = sut.createRequest(request).getRequestId();
-        assertEquals(1, requestId);
-    }
-
-    @Test
-    public void shouldGetIncrementedIdWhenAnyCall() {
-
-        request = new LoanRequest(1, BigDecimal.valueOf(1000), ClientType.PERSON);
-        final int requestId = new Random().nextInt(100);
-        sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(requestId)));
-
-        int expectedRequestId = requestId + 1;
-        int actualRequestId = sut.createRequest(request).getRequestId();
-
-        assertEquals(expectedRequestId, actualRequestId, "Значение requestId не совало с о ожидаемым");
-    }
-
-    @Test
     public void shouldGetApproveWhenValidRequest() {
         request = new LoanRequest(10, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
 
         LoanResponse actualResponse = sut.createRequest(request);
-        LoanResponse expectedResponse = new LoanResponse(1, request,ResponseType.APPROVED);
+        LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request,ResponseType.APPROVED);
 
         assertEquals(expectedResponse, actualResponse);
     }
@@ -73,7 +45,7 @@ public class AppTest {
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(requestId)));
 
         LoanResponse actualResponse = sut.createRequest(request);
-        LoanResponse expectedResponse = new LoanResponse(2, request,ResponseType.APPROVED);
+        LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request,ResponseType.APPROVED);
 
         assertEquals(expectedResponse, actualResponse);
     }
@@ -220,27 +192,9 @@ public class AppTest {
     }
 
     @Test
-    public void shouldErrorWhenCallIpNotFriendlyServiceWithIPRequest() {
-        request = new LoanRequest(11, BigDecimal.valueOf(10001), ClientType.IP);
-        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
-        LoanResponse response = sut.createRequest(request);
-
-        assertEquals(ResponseType.ERROR, response.getResponseType(), "Должна была вернуться ошибка");
-    }
-
-    @Test
-    public void shouldNotErrorWhenCallIpNotFriendlyServiceWithoutIPRequest() {
-        request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
-        LoanResponse response = sut.createRequest(request);
-
-        assertNotEquals(ResponseType.ERROR, response.getResponseType() , "Не должна вернуться ошибка");
-    }
-
-    @Test
     public void shouldGetTrueWhenCompareSameResponses() {
         request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
+        sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
         assertEquals(response, response, "Объекты должны быть эквивалентны");
@@ -249,7 +203,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithOtherObject() {
         request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
+        sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
         assertNotEquals(response, request, "Объекты НЕ должны быть эквивалентны");
@@ -258,7 +212,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithNull() {
         request = new LoanRequest(11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        sut = new LoanCalcController(new IpNotFriendlyService(new VariableLoanCalcRepository(0)));
+        sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository(0)));
         LoanResponse response = sut.createRequest(request);
 
         assertNotEquals(response, null, "Объекты НЕ должны быть эквивалентны");
