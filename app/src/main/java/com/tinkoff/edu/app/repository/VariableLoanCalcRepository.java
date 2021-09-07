@@ -2,8 +2,9 @@ package com.tinkoff.edu.app.repository;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
-import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
+import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -40,13 +41,13 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param uuid id заявки
      * @return Response
      */
-    public LoanResponse getResponseByUUID(UUID uuid) {
+    public LoanResponse getResponseByUUID(UUID uuid) throws RecordNotFoundException {
         for (int i = 0; i < loanResponses.length; i++) {
             if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
                 return loanResponses[i];
             }
         }
-        return null;
+        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
     }
 
     /**
@@ -55,12 +56,13 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param uuid id заявки
      * @return Response
      */
-    public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) {
+    public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) throws RecordNotFoundException{
         for (int i = 0; i < loanResponses.length; i++) {
             if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
                 loanResponses[i].setResponseType(responseType);
                 break;
             }
         }
+        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
     }
 }

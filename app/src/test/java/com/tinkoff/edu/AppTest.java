@@ -2,10 +2,10 @@ package com.tinkoff.edu;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
-import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.controller.LoanCalcController;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.BasicLoanCalcService;
 import org.junit.jupiter.api.BeforeAll;
@@ -206,12 +206,12 @@ public class AppTest {
     }
 
     @Test
-    public void shouldGetExceptionWherStorageIsFull() {
+    public void shouldGetExceptionWhereStorageIsFull() {
         request = new LoanRequest("StackOverflow", 11, BigDecimal.valueOf(10001), ClientType.OOO);
-
+        VariableLoanCalcRepository repository = new VariableLoanCalcRepository();
         StorageIsFullException e = assertThrows(StorageIsFullException.class, () -> {
         for (int i = 0; i < 101; i++)
-            sut.createRequest(request);
+            repository.save(request, ResponseType.APPROVED);
         });
 
         assertEquals("Хранилище заполнено!!", e.getMessage());

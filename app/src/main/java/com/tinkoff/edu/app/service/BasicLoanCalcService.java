@@ -3,12 +3,13 @@ package com.tinkoff.edu.app.service;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
-import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class BasicLoanCalcService implements LoanCalcService {
     private final LoanCalcRepository loanCalcRepository;
@@ -43,7 +44,7 @@ public class BasicLoanCalcService implements LoanCalcService {
         try {
             return loanCalcRepository.save(request, responseType);
         } catch (StorageIsFullException e) {
-            return null;
+            return new LoanResponse(UUID.fromString("00000000-0000-0000-0000-000000000000"), request, ResponseType.ERROR);
         }
     }
 
