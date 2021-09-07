@@ -2,6 +2,7 @@ package com.tinkoff.edu;
 
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.StorageIsFullException;
 import com.tinkoff.edu.app.controller.LoanCalcController;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
@@ -203,5 +204,16 @@ public class AppTest {
 
         assertNotEquals(response, null, "Объекты НЕ должны быть эквивалентны");
     }
+
+    @Test
+    public void shouldGetExceptionWherStorageIsFull() {
+        request = new LoanRequest("StackOverflow", 11, BigDecimal.valueOf(10001), ClientType.OOO);
+
+        StorageIsFullException e = assertThrows(StorageIsFullException.class, () -> {
+        for (int i = 0; i < 101; i++)
+            sut.createRequest(request);
+        });
+
+        assertEquals("Хранилище заполнено!!", e.getMessage());
+    }
 }
-;

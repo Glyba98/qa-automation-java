@@ -13,7 +13,7 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
     private int lastRecord = 0;
 
     public VariableLoanCalcRepository() {
-        loanResponses = new LoanResponse[100_000];
+        loanResponses = new LoanResponse[100];
     }
 
     /**
@@ -24,7 +24,7 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      */
     public LoanResponse save(LoanRequest request, ResponseType responseType) throws StorageIsFullException {
         //....
-        if (lastRecord < 100000) {
+        if (lastRecord < 99) {
             UUID uuid = UUID.randomUUID();
             LoanResponse response = new LoanResponse(uuid, request, responseType);
             loanResponses[++lastRecord] = response;
