@@ -5,6 +5,7 @@ import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
 import com.tinkoff.edu.app.exceptions.StorageIsFullException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -25,10 +26,10 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      */
     public LoanResponse save(LoanRequest request, ResponseType responseType) throws StorageIsFullException {
         //....
-        if (lastRecord < 99) {
+        if (lastRecord < 100) {
             UUID uuid = UUID.randomUUID();
             LoanResponse response = new LoanResponse(uuid, request, responseType);
-            loanResponses[++lastRecord] = response;
+            loanResponses[lastRecord++] = response;
             return response;
         } else {
             throw new StorageIsFullException("Хранилище заполнено!!");
@@ -41,8 +42,8 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param uuid id заявки
      * @return Response
      */
-    public LoanResponse getResponseByUUID(UUID uuid) throws RecordNotFoundException {
-        for (int i = 0; i < loanResponses.length; i++) {
+    public LoanResponse getResponseByUUID(@NotNull UUID uuid) throws RecordNotFoundException {
+        for (int i = 0; i < lastRecord; i++) {
             if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
                 return loanResponses[i];
             }
@@ -57,12 +58,13 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @return Response
      */
     public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) throws RecordNotFoundException{
-        for (int i = 0; i < loanResponses.length; i++) {
+        for (int i = 0; i < lastRecord; i++) {
             if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
                 loanResponses[i].setResponseType(responseType);
                 break;
             }
+            if ( i == lastRecord-1)
+                throw new RecordNotFoundException("Заявка с таким UUID не найдена");
         }
-        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
     }
 }

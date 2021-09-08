@@ -21,7 +21,7 @@ public class LoanResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanResponse response = (LoanResponse) o;
-        return uuid == response.uuid && Objects.equals(request, response.request) && responseType == response.responseType;
+        return uuid.equals(response.uuid) && Objects.equals(request, response.request) && responseType == response.responseType;
     }
 
     @Override
