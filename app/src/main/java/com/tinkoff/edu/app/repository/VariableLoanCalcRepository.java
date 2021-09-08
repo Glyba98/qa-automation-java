@@ -63,7 +63,7 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
                 loanResponses[i].setResponseType(responseType);
                 return;
             }
-                throw new RecordNotFoundException("Заявка с таким UUID не найдена");
         }
+        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
     }
 }
