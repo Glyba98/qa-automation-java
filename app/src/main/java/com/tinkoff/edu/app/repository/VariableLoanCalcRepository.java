@@ -3,16 +3,19 @@ package com.tinkoff.edu.app.repository;
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
+import com.tinkoff.edu.app.exceptions.StorageIsFullException;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class VariableLoanCalcRepository implements LoanCalcRepository {
-    private int requestId;
+    private LoanResponse[] loanResponses;
+    private int lastRecord = 0;
 
-    public VariableLoanCalcRepository(int requestId) {
-        this.requestId = requestId;
-    }
-
-    public int getRequestId() {
-        return requestId;
+    public VariableLoanCalcRepository() {
+        loanResponses = new LoanResponse[100];
     }
 
     /**
@@ -21,9 +24,46 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param request параметры заявки
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request, ResponseType responseType) {
+    public LoanResponse save(LoanRequest request, ResponseType responseType) throws StorageIsFullException {
         //....
-        LoanResponse response = new LoanResponse(++requestId, request, responseType);
-        return response;
+        if (lastRecord < 100) {
+            UUID uuid = UUID.randomUUID();
+            LoanResponse response = new LoanResponse(uuid, request, responseType);
+            loanResponses[lastRecord++] = response;
+            return response;
+        } else {
+            throw new StorageIsFullException("Хранилище заполнено!!");
+        }
+    }
+
+    /**
+     * Получение данных по ID заявки
+     *
+     * @param uuid id заявки
+     * @return Response
+     */
+    public LoanResponse getResponseByUUID(@NotNull UUID uuid) throws RecordNotFoundException {
+        for (int i = 0; i < lastRecord; i++) {
+            if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
+                return loanResponses[i];
+            }
+        }
+        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
+    }
+
+    /**
+     * Изменение типа ответа по ID заявки
+     *
+     * @param uuid id заявки
+     * @return Response
+     */
+    public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) throws RecordNotFoundException{
+        for (int i = 0; i < lastRecord; i++) {
+            if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
+                loanResponses[i].setResponseType(responseType);
+                return;
+            }
+        }
+        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
     }
 }

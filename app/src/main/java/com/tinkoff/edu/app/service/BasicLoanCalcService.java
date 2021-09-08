@@ -5,9 +5,11 @@ import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class BasicLoanCalcService implements LoanCalcService {
     private final LoanCalcRepository loanCalcRepository;
@@ -23,7 +25,7 @@ public class BasicLoanCalcService implements LoanCalcService {
     /**
      * Loan calculation
      */
-    public LoanResponse createRequest(LoanRequest request) {
+    public LoanResponse createResponse(LoanRequest request) {
         if (request == null)
             throw new NullPointerException("Передана заявка без данных");
 
@@ -39,7 +41,11 @@ public class BasicLoanCalcService implements LoanCalcService {
 
         ResponseType responseType = getResponseType(request.getType(), maxAmount, requestAmount, requestMonths);
 
-        return loanCalcRepository.save(request, responseType);
+        try {
+            return loanCalcRepository.save(request, responseType);
+        } catch (StorageIsFullException e) {
+            return new LoanResponse(UUID.fromString("00000000-0000-0000-0000-000000000000"), request, ResponseType.ERROR);
+        }
     }
 
     private ResponseType getResponseType(ClientType clientType, BigDecimal cornerAmount, BigDecimal amount, int months) {
@@ -77,4 +83,6 @@ public class BasicLoanCalcService implements LoanCalcService {
     private ResponseType getResponseStatusForIp() {
         return ResponseType.NOT_APPROVED;
     }
+
+
 }
