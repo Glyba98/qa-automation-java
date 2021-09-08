@@ -30,7 +30,7 @@ public class BasicLoanCalcServiceTests {
         int approvingMonths = 12;
         request = new LoanRequest("Yuriy Dud'", approvingMonths, BigDecimal.valueOf(10000), ClientType.PERSON);
 
-        LoanResponse actualResponse = sut.createRequest(request);
+        LoanResponse actualResponse = sut.createResponse(request);
         LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request, ResponseType.APPROVED);
 
         assertEquals(expectedResponse, actualResponse);
@@ -39,7 +39,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApproveWhenMonthsLowerThenMaxForPerson() {
         request = new LoanRequest("Ivan Urgant",13, BigDecimal.valueOf(10000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -47,7 +47,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApproveWhenAmountLowerThenMaxForPerson() {
         request = new LoanRequest("Oleg Tinkov", 10, BigDecimal.valueOf(10001), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -56,7 +56,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldGetErrorWhenApplyNullRequest() {
         NullPointerException e = assertThrows(NullPointerException.class, () -> {
-            sut.createRequest(null);
+            sut.createResponse(null);
         });
         assertEquals( "Передана заявка без данных", e.getMessage());
     }
@@ -65,7 +65,7 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhenApplyNegativeAmountRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             request = new LoanRequest("Diego Maradona", 1, BigDecimal.valueOf(-1000), ClientType.PERSON);
-            sut.createRequest(request);
+            sut.createResponse(request);
         });
         assertEquals( "Сумма кредита должна быть больше 0", e.getMessage());
     }
@@ -74,7 +74,7 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhenApplyZeroAmountRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             request = new LoanRequest("Eva Elfie", 1, BigDecimal.valueOf(0), ClientType.PERSON);
-            sut.createRequest(request);
+            sut.createResponse(request);
         });
         assertEquals( "Сумма кредита должна быть больше 0", e.getMessage());
     }
@@ -83,7 +83,7 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhenMonthsNegativeRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             request = new LoanRequest("nobody", -1, BigDecimal.valueOf(1000), ClientType.PERSON);
-            sut.createRequest(request);
+            sut.createResponse(request);
         });
         assertEquals( "Срок кредита должен быть больше 0", e.getMessage());
     }
@@ -92,7 +92,7 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhenMonthsZeroRequest() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             request = new LoanRequest("Arkady Parovozov", 0, BigDecimal.valueOf(1000), ClientType.PERSON);
-            sut.createRequest(request);
+            sut.createResponse(request);
         });
         assertEquals( "Срок кредита должен быть больше 0", e.getMessage());
     }
@@ -101,7 +101,7 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhenClientTypeNotSupported() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             request = new LoanRequest("Roga i Copyta", 1, BigDecimal.valueOf(1000), ClientType.OAO);
-            sut.createRequest(request);
+            sut.createResponse(request);
         });
         assertEquals( "Неизвестный тип клиента", e.getMessage());
     }
@@ -109,7 +109,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApprovedWhenClientTypeIsIP() {
         request = new LoanRequest("Anastasiya", 1, BigDecimal.valueOf(1000), ClientType.IP);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -117,7 +117,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApprovedWhenAmountLess10000ForOOO() {
         request = new LoanRequest("TCS Group", 1, BigDecimal.valueOf(9999), ClientType.OOO);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -125,7 +125,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApprovedWhenAmountIs10000ForOOO() {
         request = new LoanRequest("Twenty Сentury Fox", 1, BigDecimal.valueOf(10000), ClientType.OOO);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -133,7 +133,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApprovedWhenMonthsMore12ForOOO() {
         request = new LoanRequest("Gazprom ", 13, BigDecimal.valueOf(10001), ClientType.OOO);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -141,7 +141,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldNotApprovedWhenMonthsIs12ForOOO() {
         request = new LoanRequest("Fantasy", 12, BigDecimal.valueOf(10001), ClientType.OOO);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");
     }
@@ -149,7 +149,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldApprovedWhenMonthsLess12AndAmountMore10000ForOOO() {
         request = new LoanRequest("Prazdnik Prazdnik Prazdnik", 11, BigDecimal.valueOf(10001), ClientType.OOO);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.APPROVED, response.getResponseType(), "Займ должен был быть одобрен");
     }
@@ -158,10 +158,10 @@ public class BasicLoanCalcServiceTests {
     public void shouldGetErrorWhereStorageIsFull() {
         request = new LoanRequest("StackOverflow", 11, BigDecimal.valueOf(10001), ClientType.OOO);
         for (int i = 0; i < 100; i++)
-            sut.createRequest(request);
-        LoanResponse response = sut.createRequest(request);
+            sut.createResponse(request);
+        LoanResponse response = sut.createResponse(request);
         LoanResponse expectedResponse = new LoanResponse(UUID.fromString("00000000-0000-0000-0000-000000000000")
                 , request, ResponseType.ERROR);
-        assertEquals(expectedResponse, response, "Вернулся респонс без ошибки");
+        assertEquals(expectedResponse, response, "Сервис вернул корректный ответ вместо ошибки");
     }
 }

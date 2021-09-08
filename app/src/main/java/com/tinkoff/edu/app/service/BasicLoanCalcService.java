@@ -25,7 +25,7 @@ public class BasicLoanCalcService implements LoanCalcService {
     /**
      * Loan calculation
      */
-    public LoanResponse createRequest(LoanRequest request) {
+    public LoanResponse createResponse(LoanRequest request) {
         if (request == null)
             throw new NullPointerException("Передана заявка без данных");
 

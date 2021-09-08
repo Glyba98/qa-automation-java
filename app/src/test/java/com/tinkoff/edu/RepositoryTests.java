@@ -70,7 +70,7 @@ public class RepositoryTests {
     @Test
     public void shouldGetResponseByUUID() {
         request = new LoanRequest("FizzBuzz", 11, BigDecimal.valueOf(10001), ClientType.OOO);
-        LoanResponse expectedResponse = sut.createRequest(request);
+        LoanResponse expectedResponse = sut.createResponse(request);
         try {
             LoanResponse actualResponse = repo.getResponseByUUID(expectedResponse.getUuid());
             assertEquals(expectedResponse, actualResponse, "Ответ сервиса не совпадает с записью в базе");
@@ -82,7 +82,7 @@ public class RepositoryTests {
     @Test
     public void shouldSetResponseTypeByUUID() {
         request = new LoanRequest("Ololo Ololoevich", 10, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
         try {
             repo.setResponseTypeByUUID(response.getUuid(), ResponseType.NOT_APPROVED);
             assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "ResponseType не установился или установился некорректно");

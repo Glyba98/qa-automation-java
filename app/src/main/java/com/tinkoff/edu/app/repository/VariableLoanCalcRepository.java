@@ -61,9 +61,8 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
         for (int i = 0; i < lastRecord; i++) {
             if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
                 loanResponses[i].setResponseType(responseType);
-                break;
+                return;
             }
-            if ( i == lastRecord-1)
                 throw new RecordNotFoundException("Заявка с таким UUID не найдена");
         }
     }

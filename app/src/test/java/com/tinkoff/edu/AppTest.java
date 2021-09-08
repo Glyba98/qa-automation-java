@@ -36,7 +36,7 @@ public class AppTest {
         request = new LoanRequest("Ololo Ololoevich", 10, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository()));
 
-        LoanResponse actualResponse = sut.createRequest(request);
+        LoanResponse actualResponse = sut.createResponse(request);
         LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request,ResponseType.APPROVED);
 
         assertEquals(expectedResponse, actualResponse);
@@ -45,7 +45,7 @@ public class AppTest {
     @Test
     public void shouldGetRequestDataInResponse() {
         request = new LoanRequest("Khalisi Stormborn",11, BigDecimal.valueOf(10000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(request, response.getRequest(), "В ответе вернулись неверные данные заявки: " + response.toString());
     }
@@ -55,7 +55,7 @@ public class AppTest {
     @Test
     public void shouldGetTrueWhenCompareSameResponses() {
         request = new LoanRequest("Stoya", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertEquals(response, response, "Объекты должны быть эквивалентны");
     }
@@ -63,7 +63,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithOtherObject() {
         request = new LoanRequest("John Snow", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertNotEquals(response, request, "Объекты НЕ должны быть эквивалентны");
     }
@@ -71,7 +71,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithNull() {
         request = new LoanRequest("Iron Man", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createRequest(request);
+        LoanResponse response = sut.createResponse(request);
 
         assertNotEquals(response, null, "Объекты НЕ должны быть эквивалентны");
     }
