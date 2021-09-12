@@ -5,6 +5,10 @@ import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
+import com.tinkoff.edu.app.exceptions.IncorrectSizeOfFullnameStringExceptions;
+import com.tinkoff.edu.app.exceptions.InvalidAmountException;
+import com.tinkoff.edu.app.exceptions.InvalidCharacterInFullnameException;
+import com.tinkoff.edu.app.exceptions.InvalidNumberOfMonthsException;
 import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
 
@@ -33,11 +37,17 @@ public class BasicLoanCalcService implements LoanCalcService {
         BigDecimal requestAmount = request.getAmount();
         int requestMonths = request.getMonths();
 
-        if (requestAmount.signum() <= 0)
-            throw new IllegalArgumentException("Сумма кредита должна быть больше 0");
+        if (request.getFullname().length() < 10 || request.getFullname().length() > 100)
+            throw new IncorrectSizeOfFullnameStringExceptions("ФИО должны быть не короче 10 и не длиннее 100 символов");
 
-        if (requestMonths <= 0)
-            throw new IllegalArgumentException("Срок кредита должен быть больше 0");
+        if (!request.getFullname().matches("[a-zA-Z[ ]]"))
+            throw new InvalidCharacterInFullnameException("ФИО должны содержать только латинские буквы алфавита и пробел");
+
+        if (requestAmount.doubleValue() <= 0.01 || requestAmount.doubleValue() > 999_999.99)
+            throw new InvalidAmountException("Сумма кредита должна быть не меньше 0.01 и не больше 999999.99");
+
+        if (requestMonths < 1 || requestMonths > 100)
+            throw new InvalidNumberOfMonthsException("Срок кредита должен быть от 1 до 100 месяцев");
 
         ResponseType responseType = getResponseType(request.getType(), maxAmount, requestAmount, requestMonths);
 
