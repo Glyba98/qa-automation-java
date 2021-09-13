@@ -40,7 +40,7 @@ public class BasicLoanCalcService implements LoanCalcService {
         if (request.getFullname().length() < 10 || request.getFullname().length() > 100)
             throw new IncorrectSizeOfFullnameStringExceptions("ФИО должны быть не короче 10 и не длиннее 100 символов");
 
-        if (!request.getFullname().matches("[a-zA-Z[ ]]"))
+        if (!request.getFullname().matches("[A-Za-z\\s]"))
             throw new InvalidCharacterInFullnameException("ФИО должны содержать только латинские буквы алфавита и пробел");
 
         if (requestAmount.doubleValue() <= 0.01 || requestAmount.doubleValue() > 999_999.99)

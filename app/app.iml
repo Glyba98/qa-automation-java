@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludePattern pattern="A-Za-z\s" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
