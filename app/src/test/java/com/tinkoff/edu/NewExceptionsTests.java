@@ -68,7 +68,7 @@ public class NewExceptionsTests {
     @Test
     public void shouldGetExceptionWhenApplyLargeAmountInRequest() {
         InvalidAmountException e = assertThrows(InvalidAmountException.class, () -> {
-            request = new LoanRequest("Diego Maradonna", 1, BigDecimal.valueOf(0), ClientType.PERSON);
+            request = new LoanRequest("Diego Maradonna", 1, BigDecimal.valueOf(1000000), ClientType.PERSON);
             sut.createResponse(request);
         });
         assertEquals( "Сумма кредита должна быть не меньше 0.01 и не больше 999999.99", e.getMessage());

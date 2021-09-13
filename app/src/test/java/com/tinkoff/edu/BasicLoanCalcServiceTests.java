@@ -28,7 +28,7 @@ public class BasicLoanCalcServiceTests {
     @Test
     public void shouldGetApproveWhenBoundaryValuesRequestForPerson() {
         int approvingMonths = 12;
-        request = new LoanRequest("Yuriy Dud'", approvingMonths, BigDecimal.valueOf(10000), ClientType.PERSON);
+        request = new LoanRequest("Yuriy Dudi", approvingMonths, BigDecimal.valueOf(10000), ClientType.PERSON);
 
         LoanResponse actualResponse = sut.createResponse(request);
         LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request, ResponseType.APPROVED);
@@ -88,7 +88,7 @@ public class BasicLoanCalcServiceTests {
 
     @Test
     public void shouldNotApprovedWhenAmountIs10000ForOOO() {
-        request = new LoanRequest("Twenty Сentury Fox", 1, BigDecimal.valueOf(10000), ClientType.OOO);
+        request = new LoanRequest("Twenty Century Fox", 1, BigDecimal.valueOf(10000), ClientType.OOO);
         LoanResponse response = sut.createResponse(request);
 
         assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "Займ не должен был быть одобрен");

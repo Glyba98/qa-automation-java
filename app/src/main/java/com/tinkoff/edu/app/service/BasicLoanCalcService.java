@@ -40,10 +40,10 @@ public class BasicLoanCalcService implements LoanCalcService {
         if (request.getFullname().length() < 10 || request.getFullname().length() > 100)
             throw new IncorrectSizeOfFullnameStringExceptions("ФИО должны быть не короче 10 и не длиннее 100 символов");
 
-        if (!request.getFullname().matches("[A-Za-z\\s]"))
+        if (!request.getFullname().matches("[A-Za-z\\s]*"))
             throw new InvalidCharacterInFullnameException("ФИО должны содержать только латинские буквы алфавита и пробел");
 
-        if (requestAmount.doubleValue() <= 0.01 || requestAmount.doubleValue() > 999_999.99)
+        if (requestAmount.doubleValue() < 0.01 || requestAmount.doubleValue() > 999_999.99)
             throw new InvalidAmountException("Сумма кредита должна быть не меньше 0.01 и не больше 999999.99");
 
         if (requestMonths < 1 || requestMonths > 100)
