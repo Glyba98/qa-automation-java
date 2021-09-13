@@ -54,7 +54,7 @@ public class AppTest {
 
     @Test
     public void shouldGetTrueWhenCompareSameResponses() {
-        request = new LoanRequest("Stoya", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
+        request = new LoanRequest("Stoyadinovich", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
         LoanResponse response = sut.createResponse(request);
 
         assertEquals(response, response, "Объекты должны быть эквивалентны");
@@ -62,7 +62,7 @@ public class AppTest {
 
     @Test
     public void shouldGetFalseWhenCompareResponseWithOtherObject() {
-        request = new LoanRequest("John Snow", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
+        request = new LoanRequest("John Snow you dont know", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
         LoanResponse response = sut.createResponse(request);
 
         assertNotEquals(response, request, "Объекты НЕ должны быть эквивалентны");
@@ -70,7 +70,7 @@ public class AppTest {
 
     @Test
     public void shouldGetFalseWhenCompareResponseWithNull() {
-        request = new LoanRequest("Iron Man", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
+        request = new LoanRequest("Iron Man Stark", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
         LoanResponse response = sut.createResponse(request);
 
         assertNotEquals(response, null, "Объекты НЕ должны быть эквивалентны");

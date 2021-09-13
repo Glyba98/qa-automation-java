@@ -69,7 +69,7 @@ public class RepositoryTests {
 
     @Test
     public void shouldGetResponseByUUID() {
-        request = new LoanRequest("FizzBuzz", 11, BigDecimal.valueOf(10001), ClientType.OOO);
+        request = new LoanRequest("FizzBuzz Enterprise edition", 11, BigDecimal.valueOf(10001), ClientType.OOO);
         LoanResponse expectedResponse = sut.createResponse(request);
         try {
             LoanResponse actualResponse = repo.getResponseByUUID(expectedResponse.getUuid());
