@@ -7,10 +7,12 @@ import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.BasicLoanCalcService;
+import io.vavr.Tuple2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -35,17 +37,16 @@ public class AppTest {
     public void shouldGetApproveWhenValidRequest() {
         request = new LoanRequest("Ololo Ololoevich", 10, BigDecimal.valueOf(1000), ClientType.PERSON);
         sut = new LoanCalcController(new BasicLoanCalcService(new VariableLoanCalcRepository()));
+        Tuple2<UUID, LoanResponse> response= sut.createResponse(request);
+        LoanResponse expectedResponse = new LoanResponse(request,ResponseType.APPROVED);
 
-        LoanResponse actualResponse = sut.createResponse(request);
-        LoanResponse expectedResponse = new LoanResponse(actualResponse.getUuid(), request,ResponseType.APPROVED);
-
-        assertEquals(expectedResponse, actualResponse);
+        assertEquals(expectedResponse, response._2);
     }
 
     @Test
     public void shouldGetRequestDataInResponse() {
         request = new LoanRequest("Khalisi Stormborn",11, BigDecimal.valueOf(10000), ClientType.PERSON);
-        LoanResponse response = sut.createResponse(request);
+        LoanResponse response = sut.createResponse(request)._2;
 
         assertEquals(request, response.getRequest(), "В ответе вернулись неверные данные заявки: " + response.toString());
     }
@@ -55,7 +56,7 @@ public class AppTest {
     @Test
     public void shouldGetTrueWhenCompareSameResponses() {
         request = new LoanRequest("Stoyadinovich", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createResponse(request);
+        LoanResponse response = sut.createResponse(request)._2;
 
         assertEquals(response, response, "Объекты должны быть эквивалентны");
     }
@@ -63,7 +64,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithOtherObject() {
         request = new LoanRequest("John Snow you dont know", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createResponse(request);
+        LoanResponse response = sut.createResponse(request)._2;
 
         assertNotEquals(response, request, "Объекты НЕ должны быть эквивалентны");
     }
@@ -71,7 +72,7 @@ public class AppTest {
     @Test
     public void shouldGetFalseWhenCompareResponseWithNull() {
         request = new LoanRequest("Iron Man Stark", 11, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createResponse(request);
+        LoanResponse response = sut.createResponse(request)._2;
 
         assertNotEquals(response, null, "Объекты НЕ должны быть эквивалентны");
     }
