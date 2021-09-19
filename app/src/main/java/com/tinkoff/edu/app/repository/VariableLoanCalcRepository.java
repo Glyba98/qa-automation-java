@@ -3,6 +3,7 @@ package com.tinkoff.edu.app.repository;
 import com.tinkoff.edu.app.ClientTypeFilter;
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
 import io.vavr.Tuple2;
@@ -71,7 +72,7 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
         loanResponses.put(uuid, response);
     }
 
-    public HashMap<UUID, LoanResponse> getResponsesByClientType(ResponseType type) {
+    public HashMap<UUID, LoanResponse> getResponsesByClientType(ClientType type) {
         HashMap<UUID, LoanResponse> responsesByType = new HashMap<>();
         for (UUID key : loanResponses.keySet()) {
             if(loanResponses.get(key).getRequest().getType().equals(type) )
