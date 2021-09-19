@@ -1,5 +1,6 @@
 package com.tinkoff.edu.app.repository;
 
+import com.tinkoff.edu.app.ClientTypeFilter;
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
 import com.tinkoff.edu.app.dictionary.ResponseType;
@@ -7,6 +8,7 @@ import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
 import io.vavr.Tuple2;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -67,6 +69,21 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
 
         response.setResponseType(responseType);
         loanResponses.put(uuid, response);
+    }
+
+    public HashMap<UUID, LoanResponse> getResponsesByClientType(ResponseType type) {
+        HashMap<UUID, LoanResponse> responsesByType = new HashMap<>();
+        for (UUID key : loanResponses.keySet()) {
+            if(loanResponses.get(key).getRequest().getType().equals(type) )
+                responsesByType.put(key, loanResponses.get(key));
+        }
+        return responsesByType;
+    }
+
+    public BigDecimal getSumRequestsOfOOO() {
+        BigDecimal result = loanResponses.values().stream().filter(new ClientTypeFilter())
+                .reduce(BigDecimal.valueOf(0), (x,y) -> x.add(y.getRequest().getAmount()), (x,y) -> x.add(y));
+        return result;
     }
 
 }
