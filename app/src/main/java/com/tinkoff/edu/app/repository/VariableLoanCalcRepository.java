@@ -1,21 +1,24 @@
 package com.tinkoff.edu.app.repository;
 
+import com.tinkoff.edu.app.ClientTypeFilter;
 import com.tinkoff.edu.app.LoanRequest;
 import com.tinkoff.edu.app.LoanResponse;
+import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
-import com.tinkoff.edu.app.exceptions.StorageIsFullException;
+import io.vavr.Tuple2;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class VariableLoanCalcRepository implements LoanCalcRepository {
-    private LoanResponse[] loanResponses;
+    private java.util.HashMap<UUID, LoanResponse> loanResponses;
     private int lastRecord = 0;
 
     public VariableLoanCalcRepository() {
-        loanResponses = new LoanResponse[100];
+        loanResponses = new HashMap<UUID, LoanResponse>();
     }
 
     /**
@@ -24,16 +27,12 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @param request параметры заявки
      * @return Request Id
      */
-    public LoanResponse save(LoanRequest request, ResponseType responseType) throws StorageIsFullException {
-        //....
-        if (lastRecord < 100) {
-            UUID uuid = UUID.randomUUID();
-            LoanResponse response = new LoanResponse(uuid, request, responseType);
-            loanResponses[lastRecord++] = response;
-            return response;
-        } else {
-            throw new StorageIsFullException("Хранилище заполнено!!");
-        }
+    public Tuple2<UUID, LoanResponse> save(LoanRequest request, ResponseType responseType) {
+        UUID uuid = UUID.randomUUID();
+        LoanResponse response = new LoanResponse(request, responseType);
+        loanResponses.put(uuid, response);
+        Tuple2<UUID, LoanResponse> savedItem = new Tuple2<>(uuid,response);
+        return savedItem;
     }
 
     /**
@@ -43,27 +42,49 @@ public class VariableLoanCalcRepository implements LoanCalcRepository {
      * @return Response
      */
     public LoanResponse getResponseByUUID(@NotNull UUID uuid) throws RecordNotFoundException {
-        for (int i = 0; i < lastRecord; i++) {
-            if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
-                return loanResponses[i];
-            }
-        }
-        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
+        if (uuid == null)
+            throw new NullPointerException("Передан пустой uuid");
+
+        LoanResponse response = (LoanResponse) loanResponses.get(uuid);
+
+        if (response == null)
+            throw new RecordNotFoundException("Заявка с таким UUID не найдена");
+
+        return response;
     }
 
     /**
      * Изменение типа ответа по ID заявки
      *
-     * @param uuid id заявки
-     * @return Response
+     * @param uuid         id заявки
+     * @param responseType Устанавливаемый тип ответа на заявку
      */
-    public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) throws RecordNotFoundException{
-        for (int i = 0; i < lastRecord; i++) {
-            if (Objects.equals(loanResponses[i].getUuid(), uuid)) {
-                loanResponses[i].setResponseType(responseType);
-                return;
-            }
-        }
-        throw new RecordNotFoundException("Заявка с таким UUID не найдена");
+    public void setResponseTypeByUUID(UUID uuid, ResponseType responseType) throws RecordNotFoundException {
+        if (uuid == null)
+            throw new NullPointerException("Передан пустой uuid");
+
+        LoanResponse response = loanResponses.get(uuid);
+
+        if (response == null)
+            throw new RecordNotFoundException("Заявка с таким UUID не найдена");
+
+        response.setResponseType(responseType);
+        loanResponses.put(uuid, response);
     }
+
+    public HashMap<UUID, LoanResponse> getResponsesByClientType(ClientType type) {
+        HashMap<UUID, LoanResponse> responsesByType = new HashMap<>();
+        for (UUID key : loanResponses.keySet()) {
+            if(loanResponses.get(key).getRequest().getType().equals(type) )
+                responsesByType.put(key, loanResponses.get(key));
+        }
+        return responsesByType;
+    }
+
+    public BigDecimal getSumRequestsOfOOO() {
+        BigDecimal result = loanResponses.values().stream().filter(new ClientTypeFilter())
+                .reduce(BigDecimal.valueOf(0), (x,y) -> x.add(y.getRequest().getAmount()), (x,y) -> x.add(y));
+        return result;
+    }
+
 }

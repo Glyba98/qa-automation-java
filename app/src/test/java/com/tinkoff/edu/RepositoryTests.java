@@ -6,9 +6,9 @@ import com.tinkoff.edu.app.controller.LoanCalcController;
 import com.tinkoff.edu.app.dictionary.ClientType;
 import com.tinkoff.edu.app.dictionary.ResponseType;
 import com.tinkoff.edu.app.exceptions.RecordNotFoundException;
-import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.VariableLoanCalcRepository;
 import com.tinkoff.edu.app.service.BasicLoanCalcService;
+import io.vavr.Tuple2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -28,18 +28,6 @@ public class RepositoryTests {
     public static void createSut() {
         repo = new VariableLoanCalcRepository();
         sut = new LoanCalcController(new BasicLoanCalcService(repo));
-    }
-
-    @Test
-    public void shouldGetExceptionWhereStorageIsFull() {
-        request = new LoanRequest("StackOverflow", 11, BigDecimal.valueOf(10001), ClientType.OOO);
-        VariableLoanCalcRepository repository = new VariableLoanCalcRepository();
-        StorageIsFullException e = assertThrows(StorageIsFullException.class, () -> {
-            for (int i = 0; i < 101; i++)
-                repository.save(request, ResponseType.APPROVED);
-        });
-
-        assertEquals("Хранилище заполнено!!", e.getMessage());
     }
 
     @Test
@@ -70,10 +58,10 @@ public class RepositoryTests {
     @Test
     public void shouldGetResponseByUUID() {
         request = new LoanRequest("FizzBuzz Enterprise edition", 11, BigDecimal.valueOf(10001), ClientType.OOO);
-        LoanResponse expectedResponse = sut.createResponse(request);
+        Tuple2<UUID, LoanResponse> expectedResponse = sut.createResponse(request);
         try {
-            LoanResponse actualResponse = repo.getResponseByUUID(expectedResponse.getUuid());
-            assertEquals(expectedResponse, actualResponse, "Ответ сервиса не совпадает с записью в базе");
+            LoanResponse actualResponse = repo.getResponseByUUID(expectedResponse._1);
+            assertEquals(expectedResponse._2, actualResponse, "Ответ сервиса не совпадает с записью в базе");
         } catch (RecordNotFoundException e) {
             assertFalse(true, e.getMessage());
         }
@@ -82,10 +70,10 @@ public class RepositoryTests {
     @Test
     public void shouldSetResponseTypeByUUID() {
         request = new LoanRequest("Ololo Ololoevich", 10, BigDecimal.valueOf(1000), ClientType.PERSON);
-        LoanResponse response = sut.createResponse(request);
+        Tuple2<UUID, LoanResponse> response = sut.createResponse(request);
         try {
-            repo.setResponseTypeByUUID(response.getUuid(), ResponseType.NOT_APPROVED);
-            assertEquals(ResponseType.NOT_APPROVED, response.getResponseType(), "ResponseType не установился или установился некорректно");
+            repo.setResponseTypeByUUID(response._1, ResponseType.NOT_APPROVED);
+            assertEquals(ResponseType.NOT_APPROVED, response._2.getResponseType(), "ResponseType не установился или установился некорректно");
         } catch (RecordNotFoundException e) {
             assertFalse(true, e.getMessage());
         }

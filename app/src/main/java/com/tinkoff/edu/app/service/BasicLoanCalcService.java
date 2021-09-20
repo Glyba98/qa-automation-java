@@ -9,8 +9,8 @@ import com.tinkoff.edu.app.exceptions.IncorrectSizeOfFullnameStringExceptions;
 import com.tinkoff.edu.app.exceptions.InvalidAmountException;
 import com.tinkoff.edu.app.exceptions.InvalidCharacterInFullnameException;
 import com.tinkoff.edu.app.exceptions.InvalidNumberOfMonthsException;
-import com.tinkoff.edu.app.exceptions.StorageIsFullException;
 import com.tinkoff.edu.app.repository.LoanCalcRepository;
+import io.vavr.Tuple2;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -28,8 +28,9 @@ public class BasicLoanCalcService implements LoanCalcService {
 
     /**
      * Loan calculation
+     * @return
      */
-    public LoanResponse createResponse(LoanRequest request) {
+    public Tuple2<UUID, LoanResponse> createResponse(LoanRequest request) {
         if (request == null)
             throw new NullPointerException("Передана заявка без данных");
 
@@ -51,11 +52,7 @@ public class BasicLoanCalcService implements LoanCalcService {
 
         ResponseType responseType = getResponseType(request.getType(), maxAmount, requestAmount, requestMonths);
 
-        try {
-            return loanCalcRepository.save(request, responseType);
-        } catch (StorageIsFullException e) {
-            return new LoanResponse(UUID.fromString("00000000-0000-0000-0000-000000000000"), request, ResponseType.ERROR);
-        }
+        return loanCalcRepository.save(request, responseType);
     }
 
     private ResponseType getResponseType(ClientType clientType, BigDecimal cornerAmount, BigDecimal amount, int months) {
