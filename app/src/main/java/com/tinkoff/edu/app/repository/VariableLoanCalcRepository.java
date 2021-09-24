@@ -15,7 +15,6 @@ import java.util.UUID;
 
 public class VariableLoanCalcRepository implements LoanCalcRepository {
     private java.util.HashMap<UUID, LoanResponse> loanResponses;
-    private int lastRecord = 0;
 
     public VariableLoanCalcRepository() {
         loanResponses = new HashMap<UUID, LoanResponse>();
