@@ -18,7 +18,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetInfoByClientTypeTests {
-    private LoanRequest request;
     private static VariableLoanCalcRepository repo;
     private static LoanCalcController sut;
 

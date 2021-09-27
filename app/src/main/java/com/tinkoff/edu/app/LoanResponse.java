@@ -37,7 +37,7 @@ public class LoanResponse {
     @Override
     public String toString() {
         return "LoanResponse{" +
-                ", request=" + request +
+                "request=" + request +
                 ", responseType=" + responseType +
                 '}';
     }
